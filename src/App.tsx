@@ -1,7 +1,3 @@
 export const App = () => {
-  return (
-    <>
-      <h1>Orbitagro</h1>
-    </>
-  )
-}
+	return <h1>Orbitagro</h1>;
+};
