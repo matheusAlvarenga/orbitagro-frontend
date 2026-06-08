@@ -1,3 +1,10 @@
+import { Route, Routes } from "react-router-dom";
+import { LoginPage } from "./pages/Login/LoginPage";
+
 export const App = () => {
-	return <h1>Orbitagro</h1>;
+	return (
+		<Routes>
+			<Route path="/" element={<LoginPage />} />
+		</Routes>
+	);
 };

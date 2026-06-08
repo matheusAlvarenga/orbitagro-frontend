@@ -1,0 +1,56 @@
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	width: 100%;
+}
+
+.label {
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: 0.14px;
+	color: #181d17;
+}
+
+.inputWrapper {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 11px 17px;
+	background-color: #ffffff;
+	border: 1px solid #707a6c;
+	border-radius: 8px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.inputWrapper:focus-within {
+	border-color: #005db7;
+	outline: 2px solid rgba(0, 93, 183, 0.2);
+	outline-offset: 0;
+}
+
+.icon {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	color: #707a6c;
+}
+
+.input {
+	flex: 1;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-family: "Work Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	color: #181d17;
+	min-width: 0;
+}
+
+.input::placeholder {
+	color: #bfcaba;
+}
