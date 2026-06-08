@@ -6,7 +6,7 @@ interface FormFieldProps {
 	label: string;
 	type: string;
 	placeholder: string;
-	icon: ReactNode;
+	icon?: ReactNode;
 	value?: string;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -26,7 +26,7 @@ export const FormField = ({
 				{label}
 			</label>
 			<div className={styles.inputWrapper}>
-				<span className={styles.icon}>{icon}</span>
+				{icon && <span className={styles.icon}>{icon}</span>}
 				<input
 					id={id}
 					type={type}

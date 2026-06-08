@@ -1,3 +1,16 @@
+export interface Farm {
+	id: number;
+	name: string;
+	state: string;
+	city: string;
+}
+
+export const FARMS: Farm[] = [
+	{ id: 1, name: "Fazenda Santa Helena", state: "MT", city: "Sorriso" },
+	{ id: 2, name: "Veredas do Sul", state: "GO", city: "Rio Verde" },
+	{ id: 3, name: "Estrela Dalva", state: "PR", city: "Cascavel" },
+];
+
 export interface MonthPoint {
 	month: string;
 	value: number;

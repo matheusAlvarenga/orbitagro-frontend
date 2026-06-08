@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./App.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { FarmProvider } from "./context/FarmContext.tsx";
+import { FarmsProvider } from "./context/FarmsContext.tsx";
 
 // biome-ignore lint/style/noNonNullAssertion: the root element is guaranteed to exist
 createRoot(document.getElementById("root")!).render(
@@ -11,7 +12,9 @@ createRoot(document.getElementById("root")!).render(
 		<BrowserRouter>
 			<AuthProvider>
 				<FarmProvider>
-					<App />
+					<FarmsProvider>
+						<App />
+					</FarmsProvider>
 				</FarmProvider>
 			</AuthProvider>
 		</BrowserRouter>
