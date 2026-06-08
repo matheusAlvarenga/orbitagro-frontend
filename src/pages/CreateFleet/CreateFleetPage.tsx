@@ -31,14 +31,22 @@ export const CreateFleetPage = () => {
 	const navigate = useNavigate();
 
 	const [name, setName] = useState("");
-	const [farmName, setFarmName] = useState("");
+	const [farmId, setFarmId] = useState("");
+	const [submitting, setSubmitting] = useState(false);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!name.trim() || !farmName) return;
-		addDevice({ name: name.trim(), farm_name: farmName, status: "Ativo" });
-		showToast("Rastreador adicionado com sucesso!");
-		navigate("/fleet");
+		if (!name.trim() || !farmId) return;
+		setSubmitting(true);
+		try {
+			await addDevice({ name: name.trim(), farm_id: farmId, status: "Ativo" });
+			showToast("Rastreador adicionado com sucesso!");
+			navigate("/fleet");
+		} catch {
+			showToast("Erro ao adicionar rastreador. Tente novamente.", "error");
+		} finally {
+			setSubmitting(false);
+		}
 	};
 
 	return (
@@ -66,21 +74,21 @@ export const CreateFleetPage = () => {
 						</div>
 
 						<div className={styles.fullWidth}>
-							<label htmlFor="farmName" className={styles.selectLabel}>
+							<label htmlFor="farmId" className={styles.selectLabel}>
 								Fazenda
 							</label>
 							<div className={styles.selectWrapper}>
 								<select
-									id="farmName"
-									className={`${styles.select} ${!farmName ? styles.selectEmpty : ""}`}
-									value={farmName}
-									onChange={(e) => setFarmName(e.target.value)}
+									id="farmId"
+									className={`${styles.select} ${!farmId ? styles.selectEmpty : ""}`}
+									value={farmId}
+									onChange={(e) => setFarmId(e.target.value)}
 								>
 									<option value="" disabled>
 										Selecione uma fazenda
 									</option>
 									{farms.map((farm) => (
-										<option key={farm._id} value={farm.name}>
+										<option key={farm._id} value={String(farm._id)}>
 											{farm.name}
 										</option>
 									))}
@@ -100,8 +108,12 @@ export const CreateFleetPage = () => {
 						>
 							Cancelar
 						</button>
-						<button type="submit" className={styles.saveButton}>
-							Salvar e Continuar
+						<button
+							type="submit"
+							className={styles.saveButton}
+							disabled={submitting}
+						>
+							{submitting ? "Salvando..." : "Salvar e Continuar"}
 						</button>
 					</div>
 				</form>

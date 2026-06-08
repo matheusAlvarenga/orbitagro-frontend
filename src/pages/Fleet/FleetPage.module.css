@@ -257,6 +257,68 @@
 	color: #40493d;
 }
 
+/* Skeleton loading */
+@keyframes shimmer {
+	0% {
+		background-position: -400px 0;
+	}
+	100% {
+		background-position: 400px 0;
+	}
+}
+
+.skeletonBox {
+	background: linear-gradient(90deg, #e0e4da 25%, #f0f3ed 50%, #e0e4da 75%);
+	background-size: 800px 100%;
+	animation: shimmer 1.4s infinite linear;
+	border-radius: 4px;
+}
+
+.skeletonIcon {
+	width: 40px;
+	height: 40px;
+	border-radius: 8px;
+	flex-shrink: 0;
+}
+
+.skeletonTextLg {
+	height: 16px;
+	width: 160px;
+	margin-bottom: 4px;
+}
+
+.skeletonTextSm {
+	height: 12px;
+	width: 80px;
+}
+
+.skeletonTextMd {
+	height: 16px;
+	width: 100px;
+}
+
+.skeletonStatus {
+	height: 24px;
+	width: 90px;
+	border-radius: 9999px;
+}
+
+.skeletonBtn {
+	width: 32px;
+	height: 32px;
+	border-radius: 6px;
+	margin-left: auto;
+}
+
+/* Error state */
+.errorRow {
+	padding: 32px 24px;
+	text-align: center;
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	color: #b31c0f;
+}
+
 @media (max-width: 768px) {
 	.page {
 		padding: 16px;

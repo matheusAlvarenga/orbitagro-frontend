@@ -1,33 +1,33 @@
 export interface FleetDevice {
-	id: number;
+	_id: string;
+	farm_id: string;
 	name: string;
-	farm_name: string;
 	status: string;
 }
 
 export const FLEET: FleetDevice[] = [
 	{
-		id: 1,
+		_id: "1",
+		farm_id: "farm-1",
 		name: "Trator JD-8R 370",
-		farm_name: "Fazenda Boa Esperança",
 		status: "Ativo",
 	},
 	{
-		id: 2,
+		_id: "2",
+		farm_id: "farm-2",
 		name: "Caminhão Volvo FH 540",
-		farm_name: "Vale do Sol",
 		status: "Em Trânsito",
 	},
 	{
-		id: 3,
+		_id: "3",
+		farm_id: "farm-1",
 		name: "Colheitadeira S790",
-		farm_name: "Fazenda São Jorge",
 		status: "Manutenção",
 	},
 	{
-		id: 4,
+		_id: "4",
+		farm_id: "farm-1",
 		name: "Pulverizador Patriot 350",
-		farm_name: "Fazenda Boa Esperança",
 		status: "Offline",
 	},
 ];

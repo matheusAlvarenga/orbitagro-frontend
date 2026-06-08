@@ -81,20 +81,46 @@ const StatusBadge = ({ status }: { status: string }) => (
 	</div>
 );
 
+const SkeletonRows = () => (
+	<>
+		{[1, 2, 3].map((n) => (
+			<div key={n} className={styles.tableRow}>
+				<div className={styles.assetCell}>
+					<div className={`${styles.skeletonBox} ${styles.skeletonIcon}`} />
+					<div className={styles.deviceInfo}>
+						<div className={`${styles.skeletonBox} ${styles.skeletonTextLg}`} />
+						<div className={`${styles.skeletonBox} ${styles.skeletonTextSm}`} />
+					</div>
+				</div>
+				<div className={`${styles.skeletonBox} ${styles.skeletonTextMd}`} />
+				<div className={`${styles.skeletonBox} ${styles.skeletonStatus}`} />
+				<div className={`${styles.skeletonBox} ${styles.skeletonBtn}`} />
+			</div>
+		))}
+	</>
+);
+
 export const FleetPage = () => {
-	const { fleet, removeDevice } = useFleet();
+	const { fleet, loading, error, removeDevice } = useFleet();
 	const { showToast } = useToast();
 	const [deviceToDelete, setDeviceToDelete] = useState<FleetDevice | null>(
 		null,
 	);
+	const [deleting, setDeleting] = useState(false);
 	const navigate = useNavigate();
 
-	const handleConfirmDelete = () => {
-		if (deviceToDelete) {
-			removeDevice(deviceToDelete.id);
+	const handleConfirmDelete = async () => {
+		if (!deviceToDelete) return;
+		setDeleting(true);
+		try {
+			await removeDevice(deviceToDelete._id);
 			showToast(`${deviceToDelete.name} removido.`);
+			setDeviceToDelete(null);
+		} catch {
+			showToast("Erro ao remover rastreador. Tente novamente.", "error");
+		} finally {
+			setDeleting(false);
 		}
-		setDeviceToDelete(null);
 	};
 
 	return (
@@ -125,41 +151,48 @@ export const FleetPage = () => {
 						</div>
 
 						<div className={styles.tableBody}>
-							{fleet.map((device) => (
-								<div key={device.id} className={styles.tableRow}>
-									<div className={styles.assetCell}>
-										<div className={styles.iconBox}>
-											<DeviceIcon />
+							{error ? (
+								<p className={styles.errorRow}>{error}</p>
+							) : loading ? (
+								<SkeletonRows />
+							) : (
+								fleet.map((device) => (
+									<div key={device._id} className={styles.tableRow}>
+										<div className={styles.assetCell}>
+											<div className={styles.iconBox}>
+												<DeviceIcon />
+											</div>
+											<div className={styles.deviceInfo}>
+												<span className={styles.deviceName}>{device.name}</span>
+												<span className={styles.deviceSubId}>
+													ID: {device._id}
+												</span>
+											</div>
 										</div>
-										<div className={styles.deviceInfo}>
-											<span className={styles.deviceName}>{device.name}</span>
-											<span className={styles.deviceSubId}>
-												ID: #{device.id}
-											</span>
+										<div className={styles.farmCell}>{device.farm_id}</div>
+										<div className={styles.statusCell}>
+											<StatusBadge status={device.status} />
+										</div>
+										<div className={styles.actionsCell}>
+											<button
+												type="button"
+												className={styles.deleteButton}
+												onClick={() => setDeviceToDelete(device)}
+												aria-label={`Remover ${device.name}`}
+											>
+												<TrashIcon />
+											</button>
 										</div>
 									</div>
-									<div className={styles.farmCell}>{device.farm_name}</div>
-									<div className={styles.statusCell}>
-										<StatusBadge status={device.status} />
-									</div>
-									<div className={styles.actionsCell}>
-										<button
-											type="button"
-											className={styles.deleteButton}
-											onClick={() => setDeviceToDelete(device)}
-											aria-label={`Remover ${device.name}`}
-										>
-											<TrashIcon />
-										</button>
-									</div>
-								</div>
-							))}
+								))
+							)}
 						</div>
 
 						<div className={styles.tableFooter}>
 							<span>
-								Mostrando {fleet.length}{" "}
-								{fleet.length === 1 ? "rastreador" : "rastreadores"}
+								{loading
+									? "Carregando rastreadores..."
+									: `Mostrando ${fleet.length} ${fleet.length === 1 ? "rastreador" : "rastreadores"}`}
 							</span>
 						</div>
 					</div>
@@ -171,6 +204,7 @@ export const FleetPage = () => {
 					farmName={deviceToDelete.name}
 					onConfirm={handleConfirmDelete}
 					onCancel={() => setDeviceToDelete(null)}
+					loading={deleting}
 				/>
 			)}
 		</>
