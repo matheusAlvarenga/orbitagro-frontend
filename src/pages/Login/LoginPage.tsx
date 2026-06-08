@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import { FormField } from "../../components/FormField/FormField";
 import { useAuth } from "../../context/AuthContext";
+import { getAuthErrorMessage } from "../../lib/authErrors";
 import styles from "./LoginPage.module.css";
 
 const EmailIcon = () => (
@@ -62,10 +64,23 @@ export const LoginPage = () => {
 	const { login } = useAuth();
 	const navigate = useNavigate();
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
+
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		login();
-		navigate("/dashboard");
+		setError(null);
+		setLoading(true);
+		try {
+			await login(email, password);
+			navigate("/dashboard");
+		} catch (err) {
+			setError(getAuthErrorMessage(err));
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -86,6 +101,8 @@ export const LoginPage = () => {
 							type="email"
 							placeholder="analista@fazenda.com"
 							icon={<EmailIcon />}
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<FormField
 							id="password"
@@ -93,9 +110,14 @@ export const LoginPage = () => {
 							type="password"
 							placeholder="••••••••"
 							icon={<LockIcon />}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
+						{error && <p className={styles.error}>{error}</p>}
 						<div className={styles.buttonWrapper}>
-							<Button type="submit">Acessar Plataforma</Button>
+							<Button type="submit" disabled={loading}>
+								{loading ? "Entrando..." : "Acessar Plataforma"}
+							</Button>
 						</div>
 					</form>
 

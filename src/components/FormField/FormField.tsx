@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 import styles from "./FormField.module.css";
 
 interface FormFieldProps {
@@ -7,6 +7,8 @@ interface FormFieldProps {
 	type: string;
 	placeholder: string;
 	icon: ReactNode;
+	value?: string;
+	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const FormField = ({
@@ -15,6 +17,8 @@ export const FormField = ({
 	type,
 	placeholder,
 	icon,
+	value,
+	onChange,
 }: FormFieldProps) => {
 	return (
 		<div className={styles.field}>
@@ -28,6 +32,8 @@ export const FormField = ({
 					type={type}
 					placeholder={placeholder}
 					className={styles.input}
+					value={value}
+					onChange={onChange}
 				/>
 			</div>
 		</div>

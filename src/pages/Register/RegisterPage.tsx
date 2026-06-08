@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import { FormField } from "../../components/FormField/FormField";
+import { useAuth } from "../../context/AuthContext";
+import { getAuthErrorMessage } from "../../lib/authErrors";
 import styles from "./RegisterPage.module.css";
 
 const UserIcon = () => (
@@ -77,6 +80,36 @@ const LockCheckIcon = () => (
 );
 
 export const RegisterPage = () => {
+	const { register } = useAuth();
+	const navigate = useNavigate();
+
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setError(null);
+
+		if (password !== confirmPassword) {
+			setError("As senhas não coincidem.");
+			return;
+		}
+
+		setLoading(true);
+		try {
+			await register(email, password);
+			navigate("/dashboard");
+		} catch (err) {
+			setError(getAuthErrorMessage(err));
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<main className={styles.page}>
 			<div className={styles.container}>
@@ -88,13 +121,15 @@ export const RegisterPage = () => {
 						</p>
 					</header>
 
-					<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+					<form className={styles.form} onSubmit={handleSubmit}>
 						<FormField
 							id="name"
 							label="Nome Completo"
 							type="text"
 							placeholder="Como devemos chamar você?"
 							icon={<UserIcon />}
+							value={name}
+							onChange={(e) => setName(e.target.value)}
 						/>
 						<FormField
 							id="email"
@@ -102,6 +137,8 @@ export const RegisterPage = () => {
 							type="email"
 							placeholder="Digite seu melhor e-mail"
 							icon={<EmailIcon />}
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<FormField
 							id="password"
@@ -109,6 +146,8 @@ export const RegisterPage = () => {
 							type="password"
 							placeholder="••••••••"
 							icon={<LockIcon />}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<FormField
 							id="confirmPassword"
@@ -116,10 +155,13 @@ export const RegisterPage = () => {
 							type="password"
 							placeholder="••••••••"
 							icon={<LockCheckIcon />}
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
 						/>
+						{error && <p className={styles.error}>{error}</p>}
 						<div className={styles.buttonWrapper}>
-							<Button type="submit" showArrow={false}>
-								Criar Conta
+							<Button type="submit" showArrow={false} disabled={loading}>
+								{loading ? "Criando conta..." : "Criar Conta"}
 							</Button>
 						</div>
 					</form>

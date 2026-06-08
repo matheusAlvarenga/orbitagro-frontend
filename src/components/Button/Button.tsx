@@ -5,6 +5,7 @@ interface ButtonProps {
 	children: ReactNode;
 	type?: "button" | "submit";
 	showArrow?: boolean;
+	disabled?: boolean;
 	onClick?: () => void;
 }
 
@@ -12,10 +13,16 @@ export const Button = ({
 	children,
 	type = "button",
 	showArrow = true,
+	disabled = false,
 	onClick,
 }: ButtonProps) => {
 	return (
-		<button type={type} className={styles.button} onClick={onClick}>
+		<button
+			type={type}
+			className={styles.button}
+			onClick={onClick}
+			disabled={disabled}
+		>
 			{children}
 			{showArrow && (
 				<svg

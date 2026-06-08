@@ -25,3 +25,8 @@
 .button:active {
 	background-color: #084014;
 }
+
+.button:disabled {
+	background-color: #bfcaba;
+	cursor: not-allowed;
+}

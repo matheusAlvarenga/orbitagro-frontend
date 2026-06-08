@@ -72,6 +72,14 @@
 	padding-top: 8px;
 }
 
+.error {
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	color: #b31c0f;
+	margin: -8px 0 0;
+}
+
 /* Footer */
 .footer {
 	border-top: 1px solid #e0e4da;
