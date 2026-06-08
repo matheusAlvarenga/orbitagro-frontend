@@ -10,6 +10,7 @@ import type { Farm } from "../data/farmData";
 import {
 	type AddFarmPayload,
 	addFarm as addFarmService,
+	deleteFarm as deleteFarmService,
 	getFarms,
 } from "../services/api/farm";
 
@@ -18,7 +19,7 @@ interface FarmsContextValue {
 	loading: boolean;
 	error: string | null;
 	addFarm: (payload: AddFarmPayload) => Promise<void>;
-	removeFarm: (id: number) => void;
+	removeFarm: (id: number) => Promise<void>;
 }
 
 const FarmsContext = createContext<FarmsContextValue | null>(null);
@@ -43,7 +44,8 @@ export const FarmsProvider = ({ children }: { children: ReactNode }) => {
 		[],
 	);
 
-	const removeFarm = useCallback((id: number) => {
+	const removeFarm = useCallback(async (id: number): Promise<void> => {
+		await deleteFarmService(id);
 		setFarms((prev) => prev.filter((f) => f._id !== id));
 	}, []);
 

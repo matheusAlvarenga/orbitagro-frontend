@@ -86,18 +86,23 @@ export const FarmsPage = () => {
 	const { farms, loading, error, removeFarm } = useFarms();
 	const { showToast } = useToast();
 	const [farmToDelete, setFarmToDelete] = useState<Farm | null>(null);
+	const [deleting, setDeleting] = useState(false);
 	const { selectedFarmId, setSelectedFarmId } = useFarm();
 	const navigate = useNavigate();
 
-	const handleConfirmDelete = () => {
-		if (farmToDelete) {
-			removeFarm(farmToDelete._id);
-			if (String(farmToDelete._id) === selectedFarmId) {
-				setSelectedFarmId(null);
-			}
+	const handleConfirmDelete = async () => {
+		if (!farmToDelete) return;
+		setDeleting(true);
+		try {
+			await removeFarm(farmToDelete._id);
+			if (String(farmToDelete._id) === selectedFarmId) setSelectedFarmId(null);
 			showToast(`${farmToDelete.name} removida com sucesso.`);
+			setFarmToDelete(null);
+		} catch {
+			showToast("Erro ao remover fazenda. Tente novamente.", "error");
+		} finally {
+			setDeleting(false);
 		}
-		setFarmToDelete(null);
 	};
 
 	return (
@@ -179,6 +184,7 @@ export const FarmsPage = () => {
 					farmName={farmToDelete.name}
 					onConfirm={handleConfirmDelete}
 					onCancel={() => setFarmToDelete(null)}
+					loading={deleting}
 				/>
 			)}
 		</>

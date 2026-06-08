@@ -1,5 +1,5 @@
 import { freeze } from "../../time/freeze";
-import type { AddFarm, GetFarms } from ".";
+import type { AddFarm, DeleteFarm, GetFarms } from ".";
 
 export const getFarms: GetFarms = async () => {
 	await freeze(1000);
@@ -14,4 +14,8 @@ export const getFarms: GetFarms = async () => {
 export const addFarm: AddFarm = async (payload) => {
 	await freeze(5000);
 	return { _id: Date.now(), ...payload };
+};
+
+export const deleteFarm: DeleteFarm = async (_id) => {
+	await freeze(1000);
 };

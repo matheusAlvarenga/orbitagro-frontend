@@ -1,6 +1,6 @@
 import type { Farm } from "../../../data/farmData";
 import { apiClient } from "../client";
-import type { AddFarm, GetFarms } from ".";
+import type { AddFarm, DeleteFarm, GetFarms } from ".";
 
 const MOCK_POLYGON = {
 	type: "Polygon" as const,
@@ -19,3 +19,6 @@ export const getFarms: GetFarms = () => apiClient.get<Farm[]>("/farms");
 
 export const addFarm: AddFarm = (payload) =>
 	apiClient.post<Farm>("/farms", { ...payload, polygon: MOCK_POLYGON });
+
+export const deleteFarm: DeleteFarm = (id) =>
+	apiClient.delete<void>(`/farms/${id}`);

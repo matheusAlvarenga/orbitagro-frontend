@@ -6,6 +6,7 @@ interface ConfirmDeleteModalProps {
 	farmName: string;
 	onConfirm: () => void;
 	onCancel: () => void;
+	loading?: boolean;
 }
 
 const WarningIcon = () => (
@@ -34,6 +35,7 @@ export const ConfirmDeleteModal = ({
 	farmName,
 	onConfirm,
 	onCancel,
+	loading = false,
 }: ConfirmDeleteModalProps) => {
 	useEffect(() => {
 		const handleKey = (e: KeyboardEvent) => {
@@ -76,8 +78,9 @@ export const ConfirmDeleteModal = ({
 						type="button"
 						className={styles.deleteButton}
 						onClick={onConfirm}
+						disabled={loading}
 					>
-						Excluir
+						{loading ? "Excluindo..." : "Excluir"}
 					</button>
 				</div>
 			</div>
