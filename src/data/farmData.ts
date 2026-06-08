@@ -1,14 +1,17 @@
 export interface Farm {
-	id: number;
+	_id: number;
 	name: string;
 	state: string;
 	city: string;
+	polygon?: number[][][];
+	createdAt?: string;
+	updatedAt?: string;
 }
 
 export const FARMS: Farm[] = [
-	{ id: 1, name: "Fazenda Santa Helena", state: "MT", city: "Sorriso" },
-	{ id: 2, name: "Veredas do Sul", state: "GO", city: "Rio Verde" },
-	{ id: 3, name: "Estrela Dalva", state: "PR", city: "Cascavel" },
+	{ _id: 1, name: "Fazenda Santa Helena", state: "MT", city: "Sorriso" },
+	{ _id: 2, name: "Veredas do Sul", state: "GO", city: "Rio Verde" },
+	{ _id: 3, name: "Estrela Dalva", state: "PR", city: "Cascavel" },
 ];
 
 export interface MonthPoint {

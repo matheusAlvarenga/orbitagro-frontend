@@ -133,12 +133,22 @@ export const CreateFarmPage = () => {
 	const [name, setName] = useState("");
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
+	const [submitting, setSubmitting] = useState(false);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!name.trim() || !city.trim() || !state.trim()) return;
-		addFarm({ name: name.trim(), city: city.trim(), state: state.trim() });
-		navigate("/farms");
+		setSubmitting(true);
+		try {
+			await addFarm({
+				name: name.trim(),
+				city: city.trim(),
+				state: state.trim(),
+			});
+			navigate("/farms");
+		} finally {
+			setSubmitting(false);
+		}
 	};
 
 	return (
@@ -211,8 +221,12 @@ export const CreateFarmPage = () => {
 						>
 							Cancelar
 						</button>
-						<button type="submit" className={styles.saveButton}>
-							Salvar e Continuar
+						<button
+							type="submit"
+							className={styles.saveButton}
+							disabled={submitting}
+						>
+							{submitting ? "Salvando..." : "Salvar e Continuar"}
 						</button>
 					</div>
 				</form>

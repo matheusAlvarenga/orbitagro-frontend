@@ -77,7 +77,7 @@ export const CreateFleetPage = () => {
 										Selecione uma fazenda
 									</option>
 									{farms.map((farm) => (
-										<option key={farm.id} value={farm.name}>
+										<option key={farm._id} value={farm.name}>
 											{farm.name}
 										</option>
 									))}

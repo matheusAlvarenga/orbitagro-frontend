@@ -71,8 +71,8 @@ export const FarmsPage = () => {
 
 	const handleConfirmDelete = () => {
 		if (farmToDelete) {
-			removeFarm(farmToDelete.id);
-			if (String(farmToDelete.id) === selectedFarmId) {
+			removeFarm(farmToDelete._id);
+			if (String(farmToDelete._id) === selectedFarmId) {
 				setSelectedFarmId(null);
 			}
 		}
@@ -109,14 +109,14 @@ export const FarmsPage = () => {
 
 						<div className={styles.tableBody}>
 							{farms.map((farm) => (
-								<div key={farm.id} className={styles.tableRow}>
+								<div key={farm._id} className={styles.tableRow}>
 									<div className={styles.farmCell}>
 										<div className={styles.farmIconBox}>
 											<FarmRowIcon />
 										</div>
 										<div className={styles.farmInfo}>
 											<span className={styles.farmName}>{farm.name}</span>
-											<span className={styles.farmId}>ID: #{farm.id}</span>
+											<span className={styles.farmId}>ID: #{farm._id}</span>
 										</div>
 									</div>
 									<div className={styles.locationCell}>
