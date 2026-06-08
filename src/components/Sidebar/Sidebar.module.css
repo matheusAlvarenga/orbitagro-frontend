@@ -1,0 +1,131 @@
+.sidebar {
+	width: 256px;
+	min-width: 256px;
+	height: 100vh;
+	background-color: #f1f5eb;
+	border-right: 1px solid #bfcaba;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 24px 0;
+	box-sizing: border-box;
+	position: sticky;
+	top: 0;
+}
+
+/* Logo */
+.logoSection {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 0 24px 32px;
+}
+
+.logoRow {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	color: #2e7d32;
+}
+
+.logoText {
+	font-family: "Hanken Grotesk", sans-serif;
+	font-size: 28px;
+	font-weight: 700;
+	letter-spacing: -0.7px;
+	line-height: 42px;
+	color: #2e7d32;
+}
+
+.logoSubtitle {
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.14px;
+	line-height: 20px;
+	color: #40493d;
+}
+
+/* Nav */
+.nav {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 0 16px;
+}
+
+.navLink {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 16px;
+	border-radius: 8px;
+	border-left: 4px solid transparent;
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.14px;
+	color: #40493d;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
+}
+
+.navLink:hover:not(.navLinkActive) {
+	background-color: rgba(46, 125, 50, 0.08);
+}
+
+.navLinkActive {
+	background-color: #2e7d32;
+	border-left-color: #0d631b;
+	color: #cbffc2;
+	font-weight: 600;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+	padding-left: 20px;
+}
+
+/* User */
+.userSection {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 0 24px;
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	border-radius: 9999px;
+	background-color: #64a1ff;
+	border: 1px solid #bfcaba;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #ffffff;
+	overflow: hidden;
+}
+
+.userInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.userName {
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0.14px;
+	line-height: 20px;
+	color: #181d17;
+}
+
+.userRole {
+	font-family: "Work Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0.48px;
+	line-height: 16px;
+	color: #40493d;
+}

@@ -1,8 +1,25 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import { FormField } from "../../components/FormField/FormField";
-import { useAuth } from "../../context/AuthContext";
-import styles from "./LoginPage.module.css";
+import styles from "./RegisterPage.module.css";
+
+const UserIcon = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="16"
+		height="16"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+		aria-hidden="true"
+	>
+		<circle cx="12" cy="8" r="4" />
+		<path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+	</svg>
+);
 
 const EmailIcon = () => (
 	<svg
@@ -40,34 +57,26 @@ const LockIcon = () => (
 	</svg>
 );
 
-const ShieldIcon = () => (
+const LockCheckIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		width="11"
-		height="14"
-		viewBox="0 0 12 16"
+		width="14"
+		height="16"
+		viewBox="0 0 16 18"
 		fill="none"
 		stroke="currentColor"
-		strokeWidth="1.5"
+		strokeWidth="2"
 		strokeLinecap="round"
 		strokeLinejoin="round"
 		aria-hidden="true"
 	>
-		<path d="M6 1L1 3.5V8c0 3 2.5 5.5 5 6.5 2.5-1 5-3.5 5-6.5V3.5L6 1z" />
-		<path d="M3.5 8l1.5 1.5 3-3" />
+		<rect x="2" y="8" width="12" height="10" rx="2" />
+		<path d="M5 8V5.5a3 3 0 0 1 6 0V8" />
+		<path d="M5.5 13l1.5 1.5 3-3" />
 	</svg>
 );
 
-export const LoginPage = () => {
-	const { login } = useAuth();
-	const navigate = useNavigate();
-
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		login();
-		navigate("/dashboard");
-	};
-
+export const RegisterPage = () => {
 	return (
 		<main className={styles.page}>
 			<div className={styles.container}>
@@ -79,12 +88,19 @@ export const LoginPage = () => {
 						</p>
 					</header>
 
-					<form className={styles.form} onSubmit={handleSubmit}>
+					<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+						<FormField
+							id="name"
+							label="Nome Completo"
+							type="text"
+							placeholder="Como devemos chamar você?"
+							icon={<UserIcon />}
+						/>
 						<FormField
 							id="email"
-							label="E-mail Corporativo"
+							label="E-mail"
 							type="email"
-							placeholder="analista@fazenda.com"
+							placeholder="Digite seu melhor e-mail"
 							icon={<EmailIcon />}
 						/>
 						<FormField
@@ -94,24 +110,28 @@ export const LoginPage = () => {
 							placeholder="••••••••"
 							icon={<LockIcon />}
 						/>
+						<FormField
+							id="confirmPassword"
+							label="Confirmação de Senha"
+							type="password"
+							placeholder="••••••••"
+							icon={<LockCheckIcon />}
+						/>
 						<div className={styles.buttonWrapper}>
-							<Button type="submit">Acessar Plataforma</Button>
+							<Button type="submit" showArrow={false}>
+								Criar Conta
+							</Button>
 						</div>
 					</form>
 
 					<footer className={styles.footer}>
 						<p className={styles.footerText}>
-							Ainda não possui uma conta?{" "}
-							<Link to="/register" className={styles.footerLink}>
-								Criar uma agora
+							Já possui uma conta?{" "}
+							<Link to="/" className={styles.footerLink}>
+								Entrar
 							</Link>
 						</p>
 					</footer>
-				</div>
-
-				<div className={styles.trustBadge}>
-					<ShieldIcon />
-					<span>Conexão Segura &amp; Criptografada</span>
 				</div>
 			</div>
 		</main>

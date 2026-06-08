@@ -1,0 +1,41 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 32px;
+	min-height: 0;
+}
+
+.telemetryGrid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 16px;
+}
+
+.charts {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+@media (max-width: 1200px) {
+	.telemetryGrid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 900px) {
+	.charts {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 600px) {
+	.page {
+		padding: 16px;
+	}
+
+	.telemetryGrid {
+		grid-template-columns: 1fr;
+	}
+}

@@ -1,0 +1,98 @@
+.page {
+	min-height: 100vh;
+	background-color: #f1f5eb;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px 16px;
+	box-sizing: border-box;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: center;
+	width: 100%;
+	max-width: 480px;
+}
+
+.card {
+	width: 100%;
+	background-color: #ffffff;
+	border-radius: 12px;
+	padding: 32px;
+	box-sizing: border-box;
+	box-shadow:
+		0px 10px 25px -5px rgba(0, 0, 0, 0.1),
+		0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+/* Header */
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+}
+
+.logo {
+	font-family: "Hanken Grotesk", sans-serif;
+	font-size: 32px;
+	font-weight: 600;
+	letter-spacing: -0.8px;
+	color: #1565c0;
+	margin: 0;
+	text-align: center;
+}
+
+.subtitle {
+	font-family: "Work Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	color: #40493d;
+	margin: 0;
+	text-align: center;
+}
+
+/* Form */
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding-bottom: 16px;
+}
+
+.buttonWrapper {
+	padding-top: 8px;
+}
+
+/* Footer */
+.footer {
+	border-top: 1px solid #bfcaba;
+	padding-top: 17px;
+	text-align: center;
+}
+
+.footerText {
+	font-family: "Work Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	color: #40493d;
+	margin: 0;
+}
+
+.footerLink {
+	font-weight: 600;
+	color: #005db7;
+	text-decoration: none;
+}
+
+.footerLink:hover {
+	text-decoration: underline;
+}

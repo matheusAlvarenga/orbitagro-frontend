@@ -1,0 +1,23 @@
+.topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 66px;
+	padding: 0 40px 0 40px;
+	background-color: #ffffff;
+	border-bottom: 1px solid #bfcaba;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+	box-sizing: border-box;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+.title {
+	font-family: "Hanken Grotesk", sans-serif;
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 36px;
+	color: #2e7d32;
+	margin: 0;
+}

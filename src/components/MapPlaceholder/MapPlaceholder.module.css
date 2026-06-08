@@ -1,0 +1,128 @@
+.container {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	background-color: #f7fbf0;
+	border: 1px solid #bfcaba;
+	border-radius: 12px;
+	box-shadow:
+		0px 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Centered placeholder content */
+.placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	color: #bfcaba;
+	text-align: center;
+	padding: 24px;
+}
+
+.placeholderText {
+	font-family: "Work Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 600;
+	color: #707a6c;
+	margin: 0;
+}
+
+.placeholderSub {
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	color: #bfcaba;
+	margin: 0;
+	max-width: 320px;
+}
+
+/* Legend — bottom-left */
+.legend {
+	position: absolute;
+	bottom: 16px;
+	left: 16px;
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	background-color: rgba(247, 251, 240, 0.9);
+	border: 1px solid #bfcaba;
+	border-radius: 8px;
+	padding: 9px 17px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+	backdrop-filter: blur(2px);
+}
+
+.legendItem {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: "Work Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.48px;
+	line-height: 16px;
+	color: #40493d;
+}
+
+.dotGreen {
+	width: 12px;
+	height: 12px;
+	border-radius: 9999px;
+	background-color: #2e7d32;
+	flex-shrink: 0;
+}
+
+.dotOrange {
+	width: 12px;
+	height: 12px;
+	border-radius: 9999px;
+	background-color: #f57c00;
+	flex-shrink: 0;
+}
+
+/* Map controls — top-right */
+.controls {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0;
+	background-color: rgba(247, 251, 240, 0.9);
+	border: 1px solid #bfcaba;
+	border-radius: 8px;
+	padding: 5px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+	backdrop-filter: blur(2px);
+}
+
+.controlBtn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #40493d;
+}
+
+.controlBtn:hover {
+	background-color: rgba(46, 125, 50, 0.08);
+}
+
+.controlDivider {
+	display: block;
+	width: 100%;
+	height: 1px;
+	background-color: #bfcaba;
+}
