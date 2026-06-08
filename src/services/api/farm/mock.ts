@@ -12,6 +12,6 @@ export const getFarms: GetFarms = async () => {
 };
 
 export const addFarm: AddFarm = async (payload) => {
-	await freeze(1000);
+	await freeze(5000);
 	return { _id: Date.now(), ...payload };
 };

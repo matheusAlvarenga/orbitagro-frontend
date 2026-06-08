@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ConfirmDeleteModal } from "../../components/ConfirmDeleteModal/ConfirmDeleteModal";
 import { DashboardLayout } from "../../components/DashboardLayout/DashboardLayout";
 import { useFleet } from "../../context/FleetContext";
+import { useToast } from "../../context/ToastContext";
 import type { FleetDevice } from "../../data/fleetData";
 import styles from "./FleetPage.module.css";
 
@@ -82,6 +83,7 @@ const StatusBadge = ({ status }: { status: string }) => (
 
 export const FleetPage = () => {
 	const { fleet, removeDevice } = useFleet();
+	const { showToast } = useToast();
 	const [deviceToDelete, setDeviceToDelete] = useState<FleetDevice | null>(
 		null,
 	);
@@ -90,6 +92,7 @@ export const FleetPage = () => {
 	const handleConfirmDelete = () => {
 		if (deviceToDelete) {
 			removeDevice(deviceToDelete.id);
+			showToast(`${deviceToDelete.name} removido.`);
 		}
 		setDeviceToDelete(null);
 	};

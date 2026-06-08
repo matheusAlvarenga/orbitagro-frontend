@@ -4,6 +4,7 @@ import { ConfirmDeleteModal } from "../../components/ConfirmDeleteModal/ConfirmD
 import { DashboardLayout } from "../../components/DashboardLayout/DashboardLayout";
 import { useFarm } from "../../context/FarmContext";
 import { useFarms } from "../../context/FarmsContext";
+import { useToast } from "../../context/ToastContext";
 import type { Farm } from "../../data/farmData";
 import styles from "./FarmsPage.module.css";
 
@@ -63,8 +64,27 @@ const PlusIcon = () => (
 	</svg>
 );
 
+const SkeletonRows = () => (
+	<>
+		{[1, 2, 3].map((n) => (
+			<div key={n} className={styles.tableRow}>
+				<div className={styles.farmCell}>
+					<div className={`${styles.skeletonBox} ${styles.skeletonIcon}`} />
+					<div className={styles.farmInfo}>
+						<div className={`${styles.skeletonBox} ${styles.skeletonTextLg}`} />
+						<div className={`${styles.skeletonBox} ${styles.skeletonTextSm}`} />
+					</div>
+				</div>
+				<div className={`${styles.skeletonBox} ${styles.skeletonTextMd}`} />
+				<div className={`${styles.skeletonBox} ${styles.skeletonBtn}`} />
+			</div>
+		))}
+	</>
+);
+
 export const FarmsPage = () => {
-	const { farms, removeFarm } = useFarms();
+	const { farms, loading, error, removeFarm } = useFarms();
+	const { showToast } = useToast();
 	const [farmToDelete, setFarmToDelete] = useState<Farm | null>(null);
 	const { selectedFarmId, setSelectedFarmId } = useFarm();
 	const navigate = useNavigate();
@@ -75,6 +95,7 @@ export const FarmsPage = () => {
 			if (String(farmToDelete._id) === selectedFarmId) {
 				setSelectedFarmId(null);
 			}
+			showToast(`${farmToDelete.name} removida com sucesso.`);
 		}
 		setFarmToDelete(null);
 	};
@@ -108,38 +129,45 @@ export const FarmsPage = () => {
 						</div>
 
 						<div className={styles.tableBody}>
-							{farms.map((farm) => (
-								<div key={farm._id} className={styles.tableRow}>
-									<div className={styles.farmCell}>
-										<div className={styles.farmIconBox}>
-											<FarmRowIcon />
+							{error ? (
+								<p className={styles.errorRow}>{error}</p>
+							) : loading ? (
+								<SkeletonRows />
+							) : (
+								farms.map((farm) => (
+									<div key={farm._id} className={styles.tableRow}>
+										<div className={styles.farmCell}>
+											<div className={styles.farmIconBox}>
+												<FarmRowIcon />
+											</div>
+											<div className={styles.farmInfo}>
+												<span className={styles.farmName}>{farm.name}</span>
+												<span className={styles.farmId}>ID: #{farm._id}</span>
+											</div>
 										</div>
-										<div className={styles.farmInfo}>
-											<span className={styles.farmName}>{farm.name}</span>
-											<span className={styles.farmId}>ID: #{farm._id}</span>
+										<div className={styles.locationCell}>
+											{farm.city}, {farm.state}
+										</div>
+										<div className={styles.actionsCell}>
+											<button
+												type="button"
+												className={styles.deleteButton}
+												onClick={() => setFarmToDelete(farm)}
+												aria-label={`Remover ${farm.name}`}
+											>
+												<TrashIcon />
+											</button>
 										</div>
 									</div>
-									<div className={styles.locationCell}>
-										{farm.city}, {farm.state}
-									</div>
-									<div className={styles.actionsCell}>
-										<button
-											type="button"
-											className={styles.deleteButton}
-											onClick={() => setFarmToDelete(farm)}
-											aria-label={`Remover ${farm.name}`}
-										>
-											<TrashIcon />
-										</button>
-									</div>
-								</div>
-							))}
+								))
+							)}
 						</div>
 
 						<div className={styles.tableFooter}>
 							<span>
-								Mostrando {farms.length}{" "}
-								{farms.length === 1 ? "fazenda" : "fazendas"}
+								{loading
+									? "Carregando fazendas..."
+									: `Mostrando ${farms.length} ${farms.length === 1 ? "fazenda" : "fazendas"}`}
 							</span>
 						</div>
 					</div>

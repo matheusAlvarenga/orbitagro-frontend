@@ -1,6 +1,7 @@
 import {
 	createContext,
 	type ReactNode,
+	useCallback,
 	useContext,
 	useEffect,
 	useState,
@@ -15,6 +16,7 @@ import {
 interface FarmsContextValue {
 	farms: Farm[];
 	loading: boolean;
+	error: string | null;
 	addFarm: (payload: AddFarmPayload) => Promise<void>;
 	removeFarm: (id: number) => void;
 }
@@ -24,24 +26,31 @@ const FarmsContext = createContext<FarmsContextValue | null>(null);
 export const FarmsProvider = ({ children }: { children: ReactNode }) => {
 	const [farms, setFarms] = useState<Farm[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		getFarms()
 			.then(setFarms)
+			.catch(() => setError("Não foi possível carregar as fazendas."))
 			.finally(() => setLoading(false));
 	}, []);
 
-	const addFarm = async (payload: AddFarmPayload): Promise<void> => {
-		const created = await addFarmService(payload);
-		setFarms((prev) => [...prev, created]);
-	};
+	const addFarm = useCallback(
+		async (payload: AddFarmPayload): Promise<void> => {
+			const created = await addFarmService(payload);
+			setFarms((prev) => [...prev, created]);
+		},
+		[],
+	);
 
-	const removeFarm = (id: number) => {
+	const removeFarm = useCallback((id: number) => {
 		setFarms((prev) => prev.filter((f) => f._id !== id));
-	};
+	}, []);
 
 	return (
-		<FarmsContext.Provider value={{ farms, loading, addFarm, removeFarm }}>
+		<FarmsContext.Provider
+			value={{ farms, loading, error, addFarm, removeFarm }}
+		>
 			{children}
 		</FarmsContext.Provider>
 	);

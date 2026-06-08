@@ -4,6 +4,7 @@ import { DashboardLayout } from "../../components/DashboardLayout/DashboardLayou
 import { FormField } from "../../components/FormField/FormField";
 import { useFarms } from "../../context/FarmsContext";
 import { useFleet } from "../../context/FleetContext";
+import { useToast } from "../../context/ToastContext";
 import styles from "./CreateFleetPage.module.css";
 
 const ChevronIcon = () => (
@@ -26,6 +27,7 @@ const ChevronIcon = () => (
 export const CreateFleetPage = () => {
 	const { farms } = useFarms();
 	const { addDevice } = useFleet();
+	const { showToast } = useToast();
 	const navigate = useNavigate();
 
 	const [name, setName] = useState("");
@@ -35,6 +37,7 @@ export const CreateFleetPage = () => {
 		e.preventDefault();
 		if (!name.trim() || !farmName) return;
 		addDevice({ name: name.trim(), farm_name: farmName, status: "Ativo" });
+		showToast("Rastreador adicionado com sucesso!");
 		navigate("/fleet");
 	};
 

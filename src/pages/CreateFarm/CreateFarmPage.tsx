@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { DashboardLayout } from "../../components/DashboardLayout/DashboardLayout";
 import { FormField } from "../../components/FormField/FormField";
 import { useFarms } from "../../context/FarmsContext";
+import { useToast } from "../../context/ToastContext";
 import styles from "./CreateFarmPage.module.css";
 
 const InfoIcon = () => (
@@ -128,6 +129,7 @@ const MapPlaceholder = () => (
 
 export const CreateFarmPage = () => {
 	const { addFarm } = useFarms();
+	const { showToast } = useToast();
 	const navigate = useNavigate();
 
 	const [name, setName] = useState("");
@@ -145,7 +147,10 @@ export const CreateFarmPage = () => {
 				city: city.trim(),
 				state: state.trim(),
 			});
+			showToast("Fazenda criada com sucesso!");
 			navigate("/farms");
+		} catch {
+			showToast("Erro ao criar fazenda. Tente novamente.", "error");
 		} finally {
 			setSubmitting(false);
 		}
