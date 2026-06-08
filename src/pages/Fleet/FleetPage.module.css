@@ -1,0 +1,286 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 32px;
+}
+
+.pageHeader {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.title {
+	font-family: "Hanken Grotesk", sans-serif;
+	font-size: 32px;
+	font-weight: 600;
+	letter-spacing: -0.32px;
+	color: #0d631b;
+	margin: 0 0 4px;
+}
+
+.subtitle {
+	font-family: "Work Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	color: #40493d;
+	margin: 0;
+}
+
+.addButton {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	background-color: #0d631b;
+	border: none;
+	border-radius: 8px;
+	padding: 8px 24px;
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.14px;
+	color: #ffffff;
+	cursor: pointer;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+	transition: background-color 0.15s ease;
+	white-space: nowrap;
+}
+
+.addButton:hover {
+	background-color: #0a5217;
+}
+
+/* Table card */
+.tableCard {
+	background-color: #ffffff;
+	border: 1px solid #bfcaba;
+	border-radius: 12px;
+	box-shadow:
+		0px 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+/* Grid: asset name | farm | status | actions */
+.tableHeader,
+.tableRow {
+	display: grid;
+	grid-template-columns: 2fr 1.5fr 160px 100px;
+	align-items: center;
+}
+
+.tableHeader {
+	background-color: #f1f5eb;
+	border-bottom: 1px solid #bfcaba;
+}
+
+.colAsset,
+.colFarm,
+.colStatus,
+.colActions {
+	padding: 16px;
+	font-family: "Work Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.6px;
+	text-transform: uppercase;
+	color: #40493d;
+}
+
+.colActions {
+	text-align: right;
+}
+
+/* Table body */
+.tableBody {
+	display: flex;
+	flex-direction: column;
+}
+
+.tableRow + .tableRow {
+	border-top: 1px solid #bfcaba;
+}
+
+/* Asset cell */
+.assetCell {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 16px;
+}
+
+.iconBox {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background-color: #e0e4da;
+	border-radius: 4px;
+	flex-shrink: 0;
+	color: #40493d;
+}
+
+.deviceInfo {
+	display: flex;
+	flex-direction: column;
+}
+
+.deviceName {
+	font-family: "Work Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 28px;
+	color: #181d17;
+}
+
+.deviceSubId {
+	font-family: "Work Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.48px;
+	color: #40493d;
+}
+
+/* Farm cell */
+.farmCell {
+	padding: 26px 16px 26px 32px;
+	font-family: "Work Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+	color: #181d17;
+}
+
+/* Status cell */
+.statusCell {
+	padding: 16px;
+}
+
+/* Status badges */
+.statusBadge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 8px;
+	border-radius: 9999px;
+	font-family: "Work Sans", sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.48px;
+	white-space: nowrap;
+}
+
+.statusDot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.statusAtivo {
+	background-color: #2e7d32;
+	color: #cbffc2;
+}
+
+.statusAtivo .statusDot {
+	background-color: #0d631b;
+}
+
+.statusEmTransito {
+	background-color: rgba(100, 161, 255, 0.3);
+	border: 1px solid #64a1ff;
+	color: #003670;
+}
+
+.statusEmTransito .statusDot {
+	background-color: #005db7;
+}
+
+.statusManutencao {
+	background-color: #fff8e1;
+	border: 1px solid #ffe082;
+	color: #f57f17;
+}
+
+.statusManutencao .statusDot {
+	background-color: #f57f17;
+}
+
+.statusOffline {
+	background-color: #e0e4da;
+	color: #40493d;
+}
+
+.statusOffline .statusDot {
+	background-color: #707a6c;
+}
+
+/* Actions cell */
+.actionsCell {
+	display: flex;
+	justify-content: flex-end;
+	padding: 16px;
+}
+
+.deleteButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	background: none;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #707a6c;
+	transition:
+		color 0.15s ease,
+		background-color 0.15s ease;
+}
+
+.deleteButton:hover {
+	color: #ba1a1a;
+	background-color: rgba(186, 26, 26, 0.08);
+}
+
+/* Table footer */
+.tableFooter {
+	background-color: #ebefe5;
+	padding: 16px 24px;
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.14px;
+	color: #40493d;
+}
+
+@media (max-width: 768px) {
+	.page {
+		padding: 16px;
+	}
+
+	.pageHeader {
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.addButton {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.tableHeader,
+	.tableRow {
+		grid-template-columns: 1fr auto;
+	}
+
+	.colFarm,
+	.colStatus,
+	.farmCell,
+	.statusCell {
+		display: none;
+	}
+}

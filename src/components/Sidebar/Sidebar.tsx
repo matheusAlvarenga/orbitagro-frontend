@@ -76,6 +76,26 @@ const FarmIcon = () => (
 	</svg>
 );
 
+const FleetIcon = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="18"
+		height="18"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+		aria-hidden="true"
+	>
+		<rect x="1" y="10" width="14" height="8" rx="1" />
+		<path d="M15 13h4l2 3v3h-6v-6z" />
+		<circle cx="5.5" cy="18.5" r="1.5" />
+		<circle cx="18.5" cy="18.5" r="1.5" />
+	</svg>
+);
+
 const UserIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -132,6 +152,15 @@ export const Sidebar = () => {
 				>
 					<FarmIcon />
 					<span>Minhas fazendas</span>
+				</NavLink>
+				<NavLink
+					to="/fleet"
+					className={({ isActive }) =>
+						`${styles.navLink} ${isActive ? styles.navLinkActive : ""}`
+					}
+				>
+					<FleetIcon />
+					<span>Minha Frota</span>
 				</NavLink>
 			</nav>
 
