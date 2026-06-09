@@ -4,5 +4,5 @@ import type { GetFleetStatus } from ".";
 
 export const getFleetStatus: GetFleetStatus = (farmId) =>
 	apiClient
-		.get<{ fleet_status: FleetStatusDevice[] }>(`/farms/${farmId}/fleet_status`)
+		.getData<{ fleet_status: FleetStatusDevice[] }>(`/map/${farmId}`)
 		.then((res) => res.fleet_status);

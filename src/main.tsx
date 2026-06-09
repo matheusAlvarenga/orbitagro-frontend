@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import { DashboardProvider } from "./context/DashboardContext.tsx";
 import { FarmProvider } from "./context/FarmContext.tsx";
 import { FarmsProvider } from "./context/FarmsContext.tsx";
 import { FleetProvider } from "./context/FleetContext.tsx";
@@ -21,7 +22,9 @@ createRoot(document.getElementById("root")!).render(
 							<FleetProvider>
 								<FleetStatusProvider>
 									<TelemetryProvider>
-										<App />
+										<DashboardProvider>
+											<App />
+										</DashboardProvider>
 									</TelemetryProvider>
 								</FleetStatusProvider>
 							</FleetProvider>

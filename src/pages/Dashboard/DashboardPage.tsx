@@ -4,10 +4,10 @@ import { PredictiveAIBanner } from "../../components/PredictiveAIBanner/Predicti
 import { RainChart } from "../../components/RainChart/RainChart";
 import { TelemetryCard } from "../../components/TelemetryCard/TelemetryCard";
 import { TemperatureChart } from "../../components/TemperatureChart/TemperatureChart";
+import { useDashboard } from "../../context/DashboardContext";
 import { useFarm } from "../../context/FarmContext";
 import { useTelemetry } from "../../context/TelemetryContext";
 import {
-	FARM_METRICS,
 	generatePrediction,
 	getAirTempColor,
 	getHumidityColor,
@@ -102,7 +102,16 @@ const LuxIcon = () => (
 
 export const DashboardPage = () => {
 	const { selectedFarmId } = useFarm();
-	const { telemetry, loading } = useTelemetry();
+	const {
+		telemetry,
+		loading: telemetryLoading,
+		error: telemetryError,
+	} = useTelemetry();
+	const {
+		dashboard,
+		loading: chartsLoading,
+		error: chartsError,
+	} = useDashboard();
 
 	if (selectedFarmId === null) {
 		return (
@@ -112,24 +121,21 @@ export const DashboardPage = () => {
 		);
 	}
 
-	const chartMetrics = FARM_METRICS[selectedFarmId];
-
 	const humidity = telemetry?.soil_moisture_pct ?? null;
 	const soilTemp = telemetry?.soil_temp ?? null;
 	const airTemp = telemetry?.ambient_temp ?? null;
 	const luminosity = telemetry?.luminosity ?? null;
 
-	const predictionMetrics =
-		telemetry && chartMetrics
-			? {
-					humidity: telemetry.soil_moisture_pct,
-					soilTemp: telemetry.soil_temp,
-					airTemp: telemetry.ambient_temp,
-					luminosity: telemetry.luminosity,
-					rain: chartMetrics.rain,
-					temperature: chartMetrics.temperature,
-				}
-			: chartMetrics;
+	const predictionMetrics = telemetry
+		? {
+				humidity: telemetry.soil_moisture_pct,
+				soilTemp: telemetry.soil_temp,
+				airTemp: telemetry.ambient_temp,
+				luminosity: telemetry.luminosity,
+				rain: dashboard?.rain ?? [],
+				temperature: dashboard?.temperature ?? [],
+			}
+		: null;
 
 	return (
 		<DashboardLayout title="Painel de Controle">
@@ -137,25 +143,49 @@ export const DashboardPage = () => {
 				<div className={styles.telemetryGrid}>
 					<TelemetryCard
 						label="Umidade do Solo"
-						value={loading || humidity === null ? "..." : `${humidity}%`}
+						value={
+							telemetryLoading
+								? "..."
+								: telemetryError || humidity === null
+									? "--"
+									: `${humidity}%`
+						}
 						color={humidity !== null ? getHumidityColor(humidity) : "#bfcaba"}
 						icon={<HumidityIcon />}
 					/>
 					<TelemetryCard
 						label="Temperatura do Solo"
-						value={loading || soilTemp === null ? "..." : `${soilTemp}°C`}
+						value={
+							telemetryLoading
+								? "..."
+								: telemetryError || soilTemp === null
+									? "--"
+									: `${soilTemp}°C`
+						}
 						color={soilTemp !== null ? getSoilTempColor(soilTemp) : "#bfcaba"}
 						icon={<ThermometerIcon />}
 					/>
 					<TelemetryCard
 						label="Temperatura Geral"
-						value={loading || airTemp === null ? "..." : `${airTemp}°C`}
+						value={
+							telemetryLoading
+								? "..."
+								: telemetryError || airTemp === null
+									? "--"
+									: `${airTemp}°C`
+						}
 						color={airTemp !== null ? getAirTempColor(airTemp) : "#bfcaba"}
 						icon={<SunIcon />}
 					/>
 					<TelemetryCard
 						label="Luminosidade"
-						value={loading || luminosity === null ? "..." : `${luminosity} lux`}
+						value={
+							telemetryLoading
+								? "..."
+								: telemetryError || luminosity === null
+									? "--"
+									: `${luminosity} lux`
+						}
 						color={
 							luminosity !== null ? getLuminosityColor(luminosity) : "#bfcaba"
 						}
@@ -167,12 +197,19 @@ export const DashboardPage = () => {
 					<PredictiveAIBanner text={generatePrediction(predictionMetrics)} />
 				)}
 
-				{chartMetrics && (
+				{dashboard ? (
 					<div className={styles.charts}>
-						<RainChart data={chartMetrics.rain} />
-						<TemperatureChart data={chartMetrics.temperature} />
+						<RainChart data={dashboard.rain} />
+						<TemperatureChart data={dashboard.temperature} />
 					</div>
-				)}
+				) : chartsLoading ? (
+					<div className={styles.charts}>
+						<div className={styles.chartSkeleton} />
+						<div className={styles.chartSkeleton} />
+					</div>
+				) : chartsError ? (
+					<p className={styles.errorText}>{chartsError}</p>
+				) : null}
 			</div>
 		</DashboardLayout>
 	);
