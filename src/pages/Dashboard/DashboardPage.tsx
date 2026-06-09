@@ -121,10 +121,12 @@ export const DashboardPage = () => {
 		);
 	}
 
-	const humidity = telemetry?.soil_moisture_pct ?? null;
-	const soilTemp = telemetry?.soil_temp ?? null;
-	const airTemp = telemetry?.ambient_temp ?? null;
-	const luminosity = telemetry?.luminosity ?? null;
+	const humidity =
+		telemetry != null ? Math.round(telemetry.soil_moisture_pct) : null;
+	const soilTemp = telemetry != null ? Math.round(telemetry.soil_temp) : null;
+	const airTemp = telemetry != null ? Math.round(telemetry.ambient_temp) : null;
+	const luminosity =
+		telemetry != null ? Math.round(telemetry.luminosity) : null;
 
 	const predictionMetrics = telemetry
 		? {
