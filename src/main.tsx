@@ -7,6 +7,7 @@ import { FarmProvider } from "./context/FarmContext.tsx";
 import { FarmsProvider } from "./context/FarmsContext.tsx";
 import { FleetProvider } from "./context/FleetContext.tsx";
 import { FleetStatusProvider } from "./context/FleetStatusContext.tsx";
+import { TelemetryProvider } from "./context/TelemetryContext.tsx";
 import { ToastProvider } from "./context/ToastContext.tsx";
 
 // biome-ignore lint/style/noNonNullAssertion: the root element is guaranteed to exist
@@ -19,7 +20,9 @@ createRoot(document.getElementById("root")!).render(
 						<FarmsProvider>
 							<FleetProvider>
 								<FleetStatusProvider>
-									<App />
+									<TelemetryProvider>
+										<App />
+									</TelemetryProvider>
 								</FleetStatusProvider>
 							</FleetProvider>
 						</FarmsProvider>

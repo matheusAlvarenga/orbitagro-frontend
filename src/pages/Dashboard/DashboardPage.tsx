@@ -5,6 +5,7 @@ import { RainChart } from "../../components/RainChart/RainChart";
 import { TelemetryCard } from "../../components/TelemetryCard/TelemetryCard";
 import { TemperatureChart } from "../../components/TemperatureChart/TemperatureChart";
 import { useFarm } from "../../context/FarmContext";
+import { useTelemetry } from "../../context/TelemetryContext";
 import {
 	FARM_METRICS,
 	generatePrediction,
@@ -101,6 +102,7 @@ const LuxIcon = () => (
 
 export const DashboardPage = () => {
 	const { selectedFarmId } = useFarm();
+	const { telemetry, loading } = useTelemetry();
 
 	if (selectedFarmId === null) {
 		return (
@@ -110,7 +112,24 @@ export const DashboardPage = () => {
 		);
 	}
 
-	const metrics = FARM_METRICS[selectedFarmId];
+	const chartMetrics = FARM_METRICS[selectedFarmId];
+
+	const humidity = telemetry?.soil_moisture_pct ?? null;
+	const soilTemp = telemetry?.soil_temp ?? null;
+	const airTemp = telemetry?.ambient_temp ?? null;
+	const luminosity = telemetry?.luminosity ?? null;
+
+	const predictionMetrics =
+		telemetry && chartMetrics
+			? {
+					humidity: telemetry.soil_moisture_pct,
+					soilTemp: telemetry.soil_temp,
+					airTemp: telemetry.ambient_temp,
+					luminosity: telemetry.luminosity,
+					rain: chartMetrics.rain,
+					temperature: chartMetrics.temperature,
+				}
+			: chartMetrics;
 
 	return (
 		<DashboardLayout title="Painel de Controle">
@@ -118,36 +137,42 @@ export const DashboardPage = () => {
 				<div className={styles.telemetryGrid}>
 					<TelemetryCard
 						label="Umidade do Solo"
-						value={`${metrics.humidity}%`}
-						color={getHumidityColor(metrics.humidity)}
+						value={loading || humidity === null ? "..." : `${humidity}%`}
+						color={humidity !== null ? getHumidityColor(humidity) : "#bfcaba"}
 						icon={<HumidityIcon />}
 					/>
 					<TelemetryCard
 						label="Temperatura do Solo"
-						value={`${metrics.soilTemp}°C`}
-						color={getSoilTempColor(metrics.soilTemp)}
+						value={loading || soilTemp === null ? "..." : `${soilTemp}°C`}
+						color={soilTemp !== null ? getSoilTempColor(soilTemp) : "#bfcaba"}
 						icon={<ThermometerIcon />}
 					/>
 					<TelemetryCard
 						label="Temperatura Geral"
-						value={`${metrics.airTemp}°C`}
-						color={getAirTempColor(metrics.airTemp)}
+						value={loading || airTemp === null ? "..." : `${airTemp}°C`}
+						color={airTemp !== null ? getAirTempColor(airTemp) : "#bfcaba"}
 						icon={<SunIcon />}
 					/>
 					<TelemetryCard
 						label="Luminosidade"
-						value={`${metrics.luminosity} lux`}
-						color={getLuminosityColor(metrics.luminosity)}
+						value={loading || luminosity === null ? "..." : `${luminosity} lux`}
+						color={
+							luminosity !== null ? getLuminosityColor(luminosity) : "#bfcaba"
+						}
 						icon={<LuxIcon />}
 					/>
 				</div>
 
-				<PredictiveAIBanner text={generatePrediction(metrics)} />
+				{predictionMetrics && (
+					<PredictiveAIBanner text={generatePrediction(predictionMetrics)} />
+				)}
 
-				<div className={styles.charts}>
-					<RainChart data={metrics.rain} />
-					<TemperatureChart data={metrics.temperature} />
-				</div>
+				{chartMetrics && (
+					<div className={styles.charts}>
+						<RainChart data={chartMetrics.rain} />
+						<TemperatureChart data={chartMetrics.temperature} />
+					</div>
+				)}
 			</div>
 		</DashboardLayout>
 	);

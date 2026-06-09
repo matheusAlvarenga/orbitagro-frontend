@@ -18,8 +18,20 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 	return body as T;
 }
 
+async function requestData<T>(path: string): Promise<T> {
+	const response = await fetch(`${baseUrl}${path}`, {
+		headers: defaultHeaders,
+	});
+
+	if (!response.ok) throw new Error(`HTTP ${response.status}: ${path}`);
+
+	const { data } = await response.json();
+	return data as T;
+}
+
 export const apiClient = {
 	get: <T>(path: string) => request<T>(path),
+	getData: <T>(path: string) => requestData<T>(path),
 	post: <T>(path: string, data: unknown) =>
 		request<T>(path, { method: "POST", body: JSON.stringify(data) }),
 	delete: <T>(path: string) => request<T>(path, { method: "DELETE" }),
