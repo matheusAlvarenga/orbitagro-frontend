@@ -2,7 +2,7 @@ export interface FleetStatusDevice {
 	device_id: number;
 	name: string;
 	status_label: string;
-	last_location: { type: "Point"; coordinates: [number, number] }; // [lng, lat]
+	last_location: { type: "Point"; coordinates: [number, number] } | null; // [lng, lat]
 	steps: [number, number][]; // [[lng, lat], ...]
 }
 

@@ -33,8 +33,9 @@ export const MapPlaceholder = () => {
 	const farm = farms.find((f) => String(f._id) === selectedFarmId) ?? null;
 	const polygonCoords = useMemo<[number, number][]>(
 		() =>
-			farm?.polygon?.[0]?.map(([lng, lat]) => [lat, lng] as [number, number]) ??
-			[],
+			farm?.polygon?.coordinates?.[0]?.map(
+				([lng, lat]) => [lat, lng] as [number, number],
+			) ?? [],
 		[farm],
 	);
 
@@ -65,6 +66,7 @@ export const MapPlaceholder = () => {
 					</>
 				)}
 				{fleetStatus.map((device, index) => {
+					if (!device.last_location) return null;
 					const [lng, lat] = device.last_location.coordinates;
 					const color = getDeviceColor(index);
 					const steps: [number, number][] = device.steps.map(([sLng, sLat]) => [

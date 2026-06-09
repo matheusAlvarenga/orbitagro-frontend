@@ -27,4 +27,4 @@ export type AddFarmPayload = {
 };
 export type AddFarm = (payload: AddFarmPayload) => Promise<Farm>;
 
-export type DeleteFarm = (id: number) => Promise<void>;
+export type DeleteFarm = (id: string) => Promise<void>;

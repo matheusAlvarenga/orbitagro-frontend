@@ -19,7 +19,7 @@ interface FarmsContextValue {
 	loading: boolean;
 	error: string | null;
 	addFarm: (payload: AddFarmPayload) => Promise<void>;
-	removeFarm: (id: number) => Promise<void>;
+	removeFarm: (id: string) => Promise<void>;
 }
 
 const FarmsContext = createContext<FarmsContextValue | null>(null);
@@ -44,7 +44,7 @@ export const FarmsProvider = ({ children }: { children: ReactNode }) => {
 		[],
 	);
 
-	const removeFarm = useCallback(async (id: number): Promise<void> => {
+	const removeFarm = useCallback(async (id: string): Promise<void> => {
 		await deleteFarmService(id);
 		setFarms((prev) => prev.filter((f) => f._id !== id));
 	}, []);
