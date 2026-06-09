@@ -1,9 +1,8 @@
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = import.meta.env.VITE_API_TOKEN;
 
 const defaultHeaders: HeadersInit = {
 	"Content-Type": "application/json",
-	"x-api-key": `Bearer ${token}`,
+	"x-api-key": "$2a$12$s1LAIXtJ2DQWEQPY21iSWOXjyC3srqFkWMbt5AiDxOgXhyJ4HqT7S",
 };
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -14,8 +13,21 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 	if (!response.ok) throw new Error(`HTTP ${response.status}: ${path}`);
 
-	const { body } = await response.json();
-	return body as T;
+	if (response.status === 204) {
+		return {} as T;
+	}
+
+	const text = await response.text();
+	if (!text.trim()) {
+		return {} as T;
+	}
+
+	try {
+		const parsed = JSON.parse(text);
+		return (parsed?.body ?? parsed) as T;
+	} catch {
+		return {} as T;
+	}
 }
 
 async function requestData<T>(path: string): Promise<T> {
@@ -25,8 +37,21 @@ async function requestData<T>(path: string): Promise<T> {
 
 	if (!response.ok) throw new Error(`HTTP ${response.status}: ${path}`);
 
-	const { data } = await response.json();
-	return data as T;
+	if (response.status === 204) {
+		return {} as T;
+	}
+
+	const text = await response.text();
+	if (!text.trim()) {
+		return {} as T;
+	}
+
+	try {
+		const parsed = JSON.parse(text);
+		return (parsed?.data ?? parsed) as T;
+	} catch {
+		return {} as T;
+	}
 }
 
 export const apiClient = {

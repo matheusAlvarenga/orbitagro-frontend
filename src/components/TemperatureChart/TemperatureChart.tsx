@@ -56,7 +56,7 @@ export const TemperatureChart = ({ data }: TemperatureChartProps) => {
 						tickFormatter={(v) => `${v}°`}
 					/>
 					<Tooltip
-						formatter={(value: number) => [`${value}°C`, "Temperatura"]}
+						formatter={(value) => [`${value}°C`, "Temperatura"]}
 						contentStyle={{
 							fontFamily: "Work Sans, sans-serif",
 							fontSize: 13,

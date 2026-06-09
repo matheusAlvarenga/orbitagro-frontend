@@ -1,17 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useFarm } from "../../context/FarmContext";
+import { useFarms } from "../../context/FarmsContext";
 import styles from "./FarmSelector.module.css";
-
-interface Farm {
-	id: string;
-	name: string;
-}
-
-const FARMS: Farm[] = [
-	{ id: "1", name: "Fazenda São João" },
-	{ id: "2", name: "Fazenda Esperança" },
-	{ id: "3", name: "Fazenda Boa Vista" },
-];
 
 const FarmIcon = () => (
 	<svg
@@ -56,10 +46,12 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
 
 export const FarmSelector = () => {
 	const { selectedFarmId, setSelectedFarmId } = useFarm();
+	const { farms, loading, error } = useFarms();
 	const [open, setOpen] = useState(false);
 	const ref = useRef<HTMLDivElement>(null);
 
-	const selectedFarm = FARMS.find((f) => f.id === selectedFarmId) ?? null;
+	const selectedFarm =
+		farms.find((f) => String(f._id) === selectedFarmId) ?? null;
 
 	useEffect(() => {
 		const handleClickOutside = (e: MouseEvent) => {
@@ -89,27 +81,39 @@ export const FarmSelector = () => {
 
 			{open && (
 				<div className={styles.dropdown} role="listbox">
-					{FARMS.map((farm) => (
-						<div
-							key={farm.id}
-							role="option"
-							tabIndex={0}
-							aria-selected={farm.id === selectedFarmId}
-							className={`${styles.option} ${farm.id === selectedFarmId ? styles.optionActive : ""}`}
-							onClick={() => {
-								setSelectedFarmId(farm.id);
-								setOpen(false);
-							}}
-							onKeyDown={(e) => {
-								if (e.key === "Enter" || e.key === " ") {
-									setSelectedFarmId(farm.id);
-									setOpen(false);
-								}
-							}}
-						>
-							{farm.name}
+					{loading ? (
+						<div className={styles.statusOption}>Carregando fazendas...</div>
+					) : error ? (
+						<div className={styles.errorOption}>{error}</div>
+					) : farms.length === 0 ? (
+						<div className={styles.statusOption}>
+							Nenhuma fazenda cadastrada
 						</div>
-					))}
+					) : (
+						farms.map((farm) => (
+							<div
+								key={farm._id}
+								role="option"
+								tabIndex={0}
+								aria-selected={String(farm._id) === selectedFarmId}
+								className={`${styles.option} ${
+									String(farm._id) === selectedFarmId ? styles.optionActive : ""
+								}`}
+								onClick={() => {
+									setSelectedFarmId(String(farm._id));
+									setOpen(false);
+								}}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" || e.key === " ") {
+										setSelectedFarmId(String(farm._id));
+										setOpen(false);
+									}
+								}}
+							>
+								{farm.name}
+							</div>
+						))
+					)}
 				</div>
 			)}
 		</div>

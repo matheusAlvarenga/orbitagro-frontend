@@ -56,7 +56,7 @@ export const RainChart = ({ data }: RainChartProps) => {
 						tickFormatter={(v) => `${v}mm`}
 					/>
 					<Tooltip
-						formatter={(value: number) => [`${value} mm`, "Chuva"]}
+						formatter={(value) => [`${value} mm`, "Chuva"]}
 						contentStyle={{
 							fontFamily: "Work Sans, sans-serif",
 							fontSize: 13,

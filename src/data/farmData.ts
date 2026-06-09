@@ -94,8 +94,6 @@ export const FARM_METRICS: Record<string, FarmMetrics> = {
 	},
 };
 
-// --- Color thresholds ---
-
 export const getHumidityColor = (v: number): string =>
 	v < 40 ? "#b31c0f" : v < 60 ? "#f57c00" : "#0d631b";
 
@@ -107,8 +105,6 @@ export const getAirTempColor = (v: number): string =>
 
 export const getLuminosityColor = (v: number): string =>
 	v > 1000 ? "#b31c0f" : v > 800 ? "#f57c00" : "#0d631b";
-
-// --- Predictive AI text ---
 
 export const generatePrediction = (m: FarmMetrics): string => {
 	if (m.humidity < 40) {
