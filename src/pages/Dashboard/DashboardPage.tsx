@@ -122,22 +122,30 @@ export const DashboardPage = () => {
 	}
 
 	const humidity =
-		telemetry != null ? Math.round(telemetry.soil_moisture_pct) : null;
-	const soilTemp = telemetry != null ? Math.round(telemetry.soil_temp) : null;
-	const airTemp = telemetry != null ? Math.round(telemetry.ambient_temp) : null;
+		telemetry?.soil_moisture_pct != null
+			? Math.round(telemetry.soil_moisture_pct)
+			: null;
+	const soilTemp =
+		telemetry?.soil_temp != null ? Math.round(telemetry.soil_temp) : null;
+	const airTemp =
+		telemetry?.ambient_temp != null ? Math.round(telemetry.ambient_temp) : null;
 	const luminosity =
-		telemetry != null ? Math.round(telemetry.luminosity) : null;
+		telemetry?.luminosity != null ? Math.round(telemetry.luminosity) : null;
 
-	const predictionMetrics = telemetry
-		? {
-				humidity: telemetry.soil_moisture_pct,
-				soilTemp: telemetry.soil_temp,
-				airTemp: telemetry.ambient_temp,
-				luminosity: telemetry.luminosity,
-				rain: dashboard?.rain ?? [],
-				temperature: dashboard?.temperature ?? [],
-			}
-		: null;
+	const predictionMetrics =
+		humidity != null &&
+		soilTemp != null &&
+		airTemp != null &&
+		luminosity != null
+			? {
+					humidity,
+					soilTemp,
+					airTemp,
+					luminosity,
+					rain: dashboard?.rain ?? [],
+					temperature: dashboard?.temperature ?? [],
+				}
+			: null;
 
 	return (
 		<DashboardLayout title="Painel de Controle">
