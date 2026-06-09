@@ -1,18 +1,6 @@
+import { useFleetStatus } from "../../context/FleetStatusContext";
+import { getDeviceColor } from "../../utils/deviceColors";
 import styles from "./FleetStatusPanel.module.css";
-
-type FleetStatus = "operating" | "stopped";
-
-interface FleetItem {
-	id: string;
-	label: string;
-	status: FleetStatus;
-}
-
-const FLEET: FleetItem[] = [
-	{ id: "TRC-101", label: "TRC-101", status: "operating" },
-	{ id: "TRC-102", label: "TRC-102", status: "operating" },
-	{ id: "TRC-103", label: "TRC-103", status: "stopped" },
-];
 
 const TractorIcon = () => (
 	<svg
@@ -52,12 +40,19 @@ const FilterIcon = () => (
 	</svg>
 );
 
-const STATUS_LABELS: Record<FleetStatus, string> = {
-	operating: "Em operação",
-	stopped: "Parado",
-};
+const SkeletonItem = () => (
+	<div className={styles.item}>
+		<div className={`${styles.skeletonBox} ${styles.skeletonIcon}`} />
+		<div className={styles.itemInfo}>
+			<div className={`${styles.skeletonBox} ${styles.skeletonTextLg}`} />
+			<div className={`${styles.skeletonBox} ${styles.skeletonTextSm}`} />
+		</div>
+	</div>
+);
 
 export const FleetStatusPanel = () => {
+	const { fleetStatus, loading, error } = useFleetStatus();
+
 	return (
 		<div className={styles.panel}>
 			<div className={styles.header}>
@@ -66,28 +61,46 @@ export const FleetStatusPanel = () => {
 			</div>
 
 			<div className={styles.list}>
-				{FLEET.map((item) => (
-					<div
-						key={item.id}
-						className={`${styles.item} ${item.status === "stopped" ? styles.itemStopped : ""}`}
-					>
-						{item.status === "stopped" && <div className={styles.alertBar} />}
-						<div
-							className={`${styles.iconWrapper} ${item.status === "stopped" ? styles.iconWrapperStopped : styles.iconWrapperOperating}`}
-						>
-							<TractorIcon />
-						</div>
-						<div className={styles.itemInfo}>
-							<span className={styles.itemId}>{item.label}</span>
-							<span className={styles.itemStatus}>
-								<span
-									className={`${styles.statusDot} ${item.status === "stopped" ? styles.statusDotStopped : styles.statusDotOperating}`}
-								/>
-								{STATUS_LABELS[item.status]}
-							</span>
-						</div>
-					</div>
-				))}
+				{error ? (
+					<p className={styles.errorText}>{error}</p>
+				) : loading ? (
+					<>
+						<SkeletonItem />
+						<SkeletonItem />
+						<SkeletonItem />
+					</>
+				) : (
+					fleetStatus.map((device, index) => {
+						const isStopped = device.status_label
+							.toLowerCase()
+							.includes("parado");
+						const color = getDeviceColor(index);
+						return (
+							<div
+								key={device.device_id}
+								className={`${styles.item} ${isStopped ? styles.itemStopped : ""}`}
+							>
+								{isStopped && <div className={styles.alertBar} />}
+								<div
+									className={styles.iconWrapper}
+									style={{ backgroundColor: `${color}1a`, color }}
+								>
+									<TractorIcon />
+								</div>
+								<div className={styles.itemInfo}>
+									<span className={styles.itemId}>{device.name}</span>
+									<span className={styles.itemStatus}>
+										<span
+											className={styles.statusDot}
+											style={{ backgroundColor: color }}
+										/>
+										{device.status_label}
+									</span>
+								</div>
+							</div>
+						);
+					})
+				)}
 			</div>
 		</div>
 	);

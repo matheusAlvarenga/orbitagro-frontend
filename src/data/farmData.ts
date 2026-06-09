@@ -8,8 +8,27 @@ export interface Farm {
 	updatedAt?: string;
 }
 
+// Farm 1 polygon encloses the fleet mock area centered at lng=-47.9300, lat=-15.7700
 export const FARMS: Farm[] = [
-	{ _id: 1, name: "Fazenda Santa Helena", state: "MT", city: "Sorriso" },
+	{
+		_id: 1,
+		name: "Fazenda Santa Helena",
+		state: "MT",
+		city: "Sorriso",
+		polygon: [
+			[
+				[-47.932, -15.7715],
+				[-47.9295, -15.772],
+				[-47.9272, -15.771],
+				[-47.9268, -15.7692],
+				[-47.9278, -15.7678],
+				[-47.9305, -15.7675],
+				[-47.9322, -15.7685],
+				[-47.9325, -15.77],
+				[-47.932, -15.7715],
+			],
+		],
+	},
 	{ _id: 2, name: "Veredas do Sul", state: "GO", city: "Rio Verde" },
 	{ _id: 3, name: "Estrela Dalva", state: "PR", city: "Cascavel" },
 ];

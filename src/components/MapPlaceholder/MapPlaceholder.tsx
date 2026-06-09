@@ -1,26 +1,103 @@
+import type { Map as LeafletMap } from "leaflet";
+import { Fragment, useEffect, useMemo, useRef } from "react";
+import "leaflet/dist/leaflet.css";
+import {
+	CircleMarker,
+	MapContainer,
+	Polygon,
+	Polyline,
+	TileLayer,
+	Tooltip,
+	useMap,
+} from "react-leaflet";
+import { useFarm } from "../../context/FarmContext";
+import { useFarms } from "../../context/FarmsContext";
+import { useFleetStatus } from "../../context/FleetStatusContext";
+import { getDeviceColor } from "../../utils/deviceColors";
 import styles from "./MapPlaceholder.module.css";
 
-const PinIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="32"
-		height="32"
-		viewBox="0 0 24 24"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="1.5"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		aria-hidden="true"
-	>
-		<path d="M12 2C8.69 2 6 4.69 6 8c0 4.5 6 12 6 12s6-7.5 6-12c0-3.31-2.69-6-6-6z" />
-		<circle cx="12" cy="8" r="2.5" />
-	</svg>
-);
+const PolygonFitter = ({ coords }: { coords: [number, number][] }) => {
+	const map = useMap();
+	useEffect(() => {
+		if (coords.length >= 3) map.fitBounds(coords, { padding: [32, 32] });
+	}, [map, coords]);
+	return null;
+};
 
 export const MapPlaceholder = () => {
+	const { farms } = useFarms();
+	const { selectedFarmId } = useFarm();
+	const { fleetStatus } = useFleetStatus();
+	const mapRef = useRef<LeafletMap | null>(null);
+
+	const farm = farms.find((f) => String(f._id) === selectedFarmId) ?? null;
+	const polygonCoords = useMemo<[number, number][]>(
+		() =>
+			farm?.polygon?.[0]?.map(([lng, lat]) => [lat, lng] as [number, number]) ??
+			[],
+		[farm],
+	);
+
 	return (
 		<div className={styles.container}>
+			<MapContainer
+				ref={mapRef}
+				center={[-14, -51]}
+				zoom={4}
+				zoomControl={false}
+				style={{ height: "100%", width: "100%" }}
+			>
+				<TileLayer
+					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+				/>
+				{polygonCoords.length >= 3 && (
+					<>
+						<PolygonFitter coords={polygonCoords} />
+						<Polygon
+							positions={polygonCoords}
+							pathOptions={{
+								color: "#0d631b",
+								weight: 2,
+								fillOpacity: 0.15,
+							}}
+						/>
+					</>
+				)}
+				{fleetStatus.map((device, index) => {
+					const [lng, lat] = device.last_location.coordinates;
+					const color = getDeviceColor(index);
+					const steps: [number, number][] = device.steps.map(([sLng, sLat]) => [
+						sLat,
+						sLng,
+					]);
+					return (
+						<Fragment key={device.device_id}>
+							{steps.length >= 2 && (
+								<Polyline
+									positions={steps}
+									pathOptions={{ color, weight: 2, dashArray: "4 4" }}
+								/>
+							)}
+							<CircleMarker
+								center={[lat, lng]}
+								radius={7}
+								pathOptions={{
+									color,
+									fillColor: color,
+									fillOpacity: 1,
+									weight: 2,
+								}}
+							>
+								<Tooltip permanent direction="top" offset={[0, -10]}>
+									{device.name}
+								</Tooltip>
+							</CircleMarker>
+						</Fragment>
+					);
+				})}
+			</MapContainer>
+
 			<div className={styles.legend}>
 				<span className={styles.legendItem}>
 					<span className={styles.dotGreen} />
@@ -32,20 +109,12 @@ export const MapPlaceholder = () => {
 				</span>
 			</div>
 
-			<div className={styles.placeholder}>
-				<PinIcon />
-				<p className={styles.placeholderText}>Mapa integrado em breve</p>
-				<p className={styles.placeholderSub}>
-					O polígono da fazenda e o rastreamento de maquinário serão exibidos
-					aqui.
-				</p>
-			</div>
-
 			<div className={styles.controls}>
 				<button
 					type="button"
 					className={styles.controlBtn}
 					aria-label="Aproximar"
+					onClick={() => mapRef.current?.zoomIn()}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -67,19 +136,20 @@ export const MapPlaceholder = () => {
 					type="button"
 					className={styles.controlBtn}
 					aria-label="Afastar"
+					onClick={() => mapRef.current?.zoomOut()}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="14"
-						height="2"
-						viewBox="0 0 14 2"
+						height="14"
+						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
 						strokeWidth="2.5"
 						strokeLinecap="round"
 						aria-hidden="true"
 					>
-						<line x1="0" y1="1" x2="14" y2="1" />
+						<line x1="5" y1="12" x2="19" y2="12" />
 					</svg>
 				</button>
 				<span className={styles.controlDivider} />
