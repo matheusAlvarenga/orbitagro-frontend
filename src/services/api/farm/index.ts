@@ -19,7 +19,12 @@ export const deleteFarm = useMocks ? deleteFarmMock : deleteFarmIntegration;
 export type GetFarmsResponse = Farm[];
 export type GetFarms = () => Promise<GetFarmsResponse>;
 
-export type AddFarmPayload = { name: string; state: string; city: string };
+export type AddFarmPayload = {
+	name: string;
+	state: string;
+	city: string;
+	polygon: { type: "Polygon"; coordinates: number[][][] };
+};
 export type AddFarm = (payload: AddFarmPayload) => Promise<Farm>;
 
 export type DeleteFarm = (id: number) => Promise<void>;
